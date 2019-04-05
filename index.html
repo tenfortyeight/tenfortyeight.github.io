@@ -4,11 +4,25 @@
   </head>
 
   <body>
+    <script type="text/javascript">
+      function importCalculator.calculate(price) {
+        price = price || parseInt(document.getElementsByClassName("calc__price")[0])
+
+        const exchangeRate = parseInt(document.getElementsByClassName("calc__exchange-rate"))
+        const shipping = 1250 * exchangeRate
+        const shippingInsurance = price * 1.015
+        const taxableAmount = price + shipping + shippingInsurance
+        const importToll = ((taxableAmount) * exchangeRate) * 1.1
+        const vat = ((taxableAmount) * exchangeRate) * 1.25
+        console.log("shipping, shippingInsurance, taxableAmount, importToll, vat", shipping, shippingInsurance, taxableAmount, importToll, vat)
+      }
+    </script>
+
     <table>
       <thead>
         <tr>
           <th>Pris i dollar</th>
-          <td><input type="number" class="calc__price" /></td>
+          <td><input type="number" class="calc__price" onchange="(e) => importCalculator.calculate(e.value)" /></td>
         </tr>
         <tr>
           <th>Dollarkurs</th>
@@ -17,11 +31,11 @@
       </thead>
       <tbody>
         <tr>
-          <th>Sjöfrakt</th>
+          <th>Sjöfrakt RORO (est.)</th>
           <td class="calc__shipping"></td>
         </tr>
         <tr>
-          <th>Sjövfraktsförsäkring</th>
+          <th>Sjövfraktsförsäkring 1,5%</th>
           <td class="calc__shipping-insurance"></td>
         </tr>
         <tr>
