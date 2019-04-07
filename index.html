@@ -1,28 +1,44 @@
-<html>
+<!DOCTYPE html>
+<html lang="sv">
   <head>
     <title>Usabilsimportkalkylatorn</title>
+
+    <meta charset="utf-8" />
   </head>
 
   <body>
     <script type="text/javascript">
-      function importCalculator.calculate(price) {
-        price = price || parseInt(document.getElementsByClassName("calc__price")[0])
+        function getEl(className) {
+          return document.getElementsByClassName(className)[0]
+        }
+      
+        function calculate() {
+          const price = parseInt(this.getEl("calc__price").value)
+          const exchangeRate = parseInt(this.getEl("calc__exchange-rate").value)
 
-        const exchangeRate = parseInt(document.getElementsByClassName("calc__exchange-rate"))
-        const shipping = 1250 * exchangeRate
-        const shippingInsurance = price * 1.015
-        const taxableAmount = price + shipping + shippingInsurance
-        const importToll = ((taxableAmount) * exchangeRate) * 1.1
-        const vat = ((taxableAmount) * exchangeRate) * 1.25
-        console.log("shipping, shippingInsurance, taxableAmount, importToll, vat", shipping, shippingInsurance, taxableAmount, importToll, vat)
-      }
+          const shipping = 1250 * exchangeRate
+          const shippingInsurance = price * 1.015
+          const taxableAmountSEK = (price + shipping + shippingInsurance) * exchangeRate
+          const importToll = (taxableAmountSEK) * 1.1
+          const vat = (taxableAmountSEK) * 1.25
+          const adminFee = 4000
+          const conversionFee = 20000
+          const noiseVerification = 3000
+          const inspection = 2500
+          const originVerification = 700
+
+          this.getEl("calc__shipping").textContent = shipping.toFixed(2)
+          this.getEl("calc__shipping-insurance").textContent = shippingInsurance.toFixed(2)
+          this.getEl("calc__import-toll").textContent = importToll.toFixed(2)
+          this.getEl("calc__vat").textContent = vat.toFixed(2)
+        }
     </script>
 
     <table>
       <thead>
         <tr>
           <th>Pris i dollar</th>
-          <td><input type="number" class="calc__price" onchange="(e) => importCalculator.calculate(e.value)" /></td>
+          <td><input type="number" class="calc__price" onblur="calculate()" /></td>
         </tr>
         <tr>
           <th>Dollarkurs</th>
@@ -35,7 +51,7 @@
           <td class="calc__shipping"></td>
         </tr>
         <tr>
-          <th>Sjövfraktsförsäkring 1,5%</th>
+          <th>Sjöfraktsförsäkring 1,5%</th>
           <td class="calc__shipping-insurance"></td>
         </tr>
         <tr>
