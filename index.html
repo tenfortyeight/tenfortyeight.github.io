@@ -15,22 +15,36 @@
         function calculate() {
           const price = parseInt(this.getEl("calc__price").value)
           const exchangeRate = parseInt(this.getEl("calc__exchange-rate").value)
-
-          const shipping = 1250 * exchangeRate
-          const shippingInsurance = price * 1.015
-          const taxableAmountSEK = (price + shipping + shippingInsurance) * exchangeRate
-          const importToll = (taxableAmountSEK) * 1.1
-          const vat = (taxableAmountSEK) * 1.25
+          const shipping = 1250
+          const shippingInsurance = (1.5 / 100) * price
+          const taxableAmountSEK = ((price + shipping + shippingInsurance) * exchangeRate)
+          const importToll = (10 / 100) * taxableAmountSEK
+          const vat = (25 / 100) * (taxableAmountSEK + importToll)
           const adminFee = 4000
           const conversionFee = 20000
           const noiseVerification = 3000
           const inspection = 2500
           const originVerification = 700
+          const total = taxableAmountSEK 
+            + importToll 
+            + vat 
+            + adminFee 
+            + conversionFee 
+            + noiseVerification 
+            + inspection 
+            + originVerification 
 
-          this.getEl("calc__shipping").textContent = shipping.toFixed(2)
-          this.getEl("calc__shipping-insurance").textContent = shippingInsurance.toFixed(2)
+          this.getEl("calc__shipping").textContent = (shipping * exchangeRate).toFixed(2)
+          this.getEl("calc__shipping-insurance").textContent = (shippingInsurance * exchangeRate).toFixed(2)
           this.getEl("calc__import-toll").textContent = importToll.toFixed(2)
           this.getEl("calc__vat").textContent = vat.toFixed(2)
+          this.getEl("calc__import-administration").textContent = adminFee
+          this.getEl("calc__usa-conversion").textContent = conversionFee
+          this.getEl("calc__noise-paper").textContent = noiseVerification
+          this.getEl("calc__car-inspection").textContent = inspection
+          this.getEl("calc__control-of-origin").textContent = originVerification
+
+          this.getEl("calc__total").textContent = total.toFixed(2)
         }
     </script>
 
@@ -42,7 +56,7 @@
         </tr>
         <tr>
           <th>Dollarkurs</th>
-          <td><input type="number" class="calc__exchange-rate" value="10" /></td>
+          <td><input type="number" class="calc__exchange-rate" value="10" onblur="calculate()" /></td>
         </tr>
       </thead>
       <tbody>
