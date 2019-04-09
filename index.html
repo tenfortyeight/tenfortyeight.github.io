@@ -4,6 +4,39 @@
     <title>Usabilsimportkalkylatorn</title>
 
     <meta charset="utf-8" />
+
+    <link href="https://fonts.googleapis.com/css?family=Hind" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <style type="text/css">
+      body, p, table, td,th, div {
+        text-align: left;
+        font-family: Hind, sans-serif;
+        font-size: 15px;
+      }
+
+      .calc__table th, .calc__table td {
+        padding-right: 5px;
+        padding-left: 3px;
+      }
+
+      //.calc__table tr:nth-child(2n) {
+      //  background-color: rgba(60, 59, 110, .3)
+      //}
+
+      .fluff__container {
+        width: 450px;
+        position: relative;
+        float: right;
+      }
+
+      .fluff__container .fluff__content {
+        font-family: Pacifico, cursive;
+        font-size: 42px;
+        opacity: .3;
+        right: 20px;
+        bottom: 20px;
+      }
+    </style>
   </head>
 
   <body>
@@ -48,7 +81,7 @@
         }
     </script>
 
-    <table>
+    <table class="calc__table">
       <thead>
         <tr>
           <th>Pris i dollar</th>
@@ -103,5 +136,10 @@
           <td class="calc__total"></td>
         </tr>
       </tfoot>
+    </table>
+
+    <div class="fluff__container">
+      <p class="fluff__content">She stared through the window at the stars, as the road markings were passing by.</p>
+    </div>
   </body>
 </html>
