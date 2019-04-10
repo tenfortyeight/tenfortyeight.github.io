@@ -7,6 +7,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Hind" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Syncopate" rel="stylesheet">
     <style type="text/css">
       body, p, table, td,th, div {
         text-align: left;
@@ -14,19 +15,30 @@
         font-size: 15px;
       }
 
+      h1 {
+        font-family: Pacifico, cursive;
+        font-size: 55px;
+        font-style: italic;
+        line-height: 44px;
+        text-align: center;
+      }
+
+      h1 sub, h1 sup {
+        font-family: Syncopate, sans-serif;
+        font-size: 21px;
+        margin-left: 544px;
+      }
+
       .calc__table th, .calc__table td {
         padding-right: 5px;
         padding-left: 3px;
       }
 
-      //.calc__table tr:nth-child(2n) {
-      //  background-color: rgba(60, 59, 110, .3)
-      //}
-
       .fluff__container {
         width: 450px;
-        position: relative;
-        float: right;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
       }
 
       .fluff__container .fluff__content {
@@ -80,6 +92,12 @@
           this.getEl("calc__total").textContent = total.toFixed(2)
         }
     </script>
+
+    <h1>
+      Usabilskalkylatorn<br />
+      <sup>It's not an exact science</sup>
+    </h1>
+
 
     <table class="calc__table">
       <thead>
