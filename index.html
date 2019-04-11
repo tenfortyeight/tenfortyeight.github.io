@@ -34,6 +34,13 @@
         padding-left: 3px;
       }
 
+      .calc__table thead:after, .calc__table tbody:after, .calc__table tfoot:after {
+        content: "-";
+        display: block;
+        line-height: 1em;
+        color: transparent;
+      }
+
       .fluff__container {
         width: 450px;
         position: absolute;
@@ -52,47 +59,6 @@
   </head>
 
   <body>
-    <script type="text/javascript">
-        function getEl(className) {
-          return document.getElementsByClassName(className)[0]
-        }
-      
-        function calculate() {
-          const price = parseInt(this.getEl("calc__price").value)
-          const exchangeRate = parseInt(this.getEl("calc__exchange-rate").value)
-          const shipping = 1250
-          const shippingInsurance = (1.5 / 100) * price
-          const taxableAmountSEK = ((price + shipping + shippingInsurance) * exchangeRate)
-          const importToll = (10 / 100) * taxableAmountSEK
-          const vat = (25 / 100) * (taxableAmountSEK + importToll)
-          const adminFee = 4000
-          const conversionFee = 20000
-          const noiseVerification = 3000
-          const inspection = 2500
-          const originVerification = 700
-          const total = taxableAmountSEK 
-            + importToll 
-            + vat 
-            + adminFee 
-            + conversionFee 
-            + noiseVerification 
-            + inspection 
-            + originVerification 
-
-          this.getEl("calc__shipping").textContent = (shipping * exchangeRate).toFixed(2)
-          this.getEl("calc__shipping-insurance").textContent = (shippingInsurance * exchangeRate).toFixed(2)
-          this.getEl("calc__import-toll").textContent = importToll.toFixed(2)
-          this.getEl("calc__vat").textContent = vat.toFixed(2)
-          this.getEl("calc__import-administration").textContent = adminFee
-          this.getEl("calc__usa-conversion").textContent = conversionFee
-          this.getEl("calc__noise-paper").textContent = noiseVerification
-          this.getEl("calc__car-inspection").textContent = inspection
-          this.getEl("calc__control-of-origin").textContent = originVerification
-
-          this.getEl("calc__total").textContent = total.toFixed(2)
-        }
-    </script>
-
     <h1>
       Usabilskalkylatorn<br />
       <sup>It's not an exact science</sup>
@@ -101,6 +67,10 @@
 
     <table class="calc__table">
       <thead>
+        <tr>
+          <th>Årsmodell</th>
+          <td><select class="calc__year"></select></td>
+        </tr>
         <tr>
           <th>Pris i dollar</th>
           <td><input type="number" class="calc__price" onblur="calculate()" /></td>
@@ -153,6 +123,14 @@
       </tbody>
       <tfoot>
         <tr>
+          <th></th>
+          <td></td>
+        </tr>
+        <tr>
+          <th>Totalt exkl moms</th>
+          <td class="calc__total-excl-vat"></td>
+        </tr>
+        <tr>
           <th>Totalt</th>
           <td class="calc__total"></td>
         </tr>
@@ -162,5 +140,77 @@
     <div class="fluff__container">
       <p class="fluff__content">She stared through the window at the stars, as the road markings were passing by.</p>
     </div>
+
+    <script type="text/javascript">
+        function getEl(className) {
+          return document.getElementsByClassName(className)[0]
+        }
+
+        function isVeteran(year) {
+          return (new Date().getFullYear() - year) >= 30
+        }
+      
+        function calculate() {
+          const year = parseInt(this.getEl("calc__year").value)
+          const price = parseInt(this.getEl("calc__price").value)
+          const exchangeRate = parseFloat(this.getEl("calc__exchange-rate").value).toFixed(2)
+
+          const vatLevel = isVeteran(year) ? 12 : 25
+
+          const shipping = 1250
+          const shippingInsurance = (1.5 / 100) * price
+          const taxableAmountSEK = ((price + shipping + shippingInsurance) * exchangeRate)
+          const importToll = isVeteran(year) ? 0 : (10 / 100) * taxableAmountSEK
+          const vat = (vatLevel / 100) * (taxableAmountSEK + importToll)
+          const adminFee = 4000
+          const conversionFee = 20000
+          const noiseVerification = 3000
+          const inspection = 2500
+          const originVerification = 700
+          const total = taxableAmountSEK 
+            + importToll 
+            + vat 
+            + adminFee 
+            + conversionFee 
+            + noiseVerification 
+            + inspection 
+            + originVerification 
+
+          this.getEl("calc__shipping").textContent = (shipping * exchangeRate).toFixed(2)
+          this.getEl("calc__shipping-insurance").textContent = (shippingInsurance * exchangeRate).toFixed(2)
+          this.getEl("calc__import-toll").textContent = importToll.toFixed(2)
+          this.getEl("calc__vat").textContent = vat.toFixed(2)
+          this.getEl("calc__import-administration").textContent = adminFee
+          this.getEl("calc__usa-conversion").textContent = conversionFee
+          this.getEl("calc__noise-paper").textContent = noiseVerification
+          this.getEl("calc__car-inspection").textContent = inspection
+          this.getEl("calc__control-of-origin").textContent = originVerification
+
+          this.getEl("calc__total-excl-vat").textContent = (total - vat).toFixed(2)
+          this.getEl("calc__total").textContent = total.toFixed(2)
+        }
+
+        function createOption(text, val) {
+          const txt = document.createTextNode(text)
+          const el = document.createElement("option")
+          el.setAttribute("value", val)
+          el.appendChild(txt)
+
+          return el
+        }
+
+        (function setYearOptions() {
+          const select = getEl("calc__year")
+
+          const year = new Date().getFullYear()
+          for (let y = year; y >= 1900; y--) {
+            const opt = createOption(y, y)
+            if(y === year) {
+              opt.setAttribute("selected", "selected")
+            }
+            select.appendChild(opt)
+          }
+        }())
+    </script>
   </body>
 </html>
